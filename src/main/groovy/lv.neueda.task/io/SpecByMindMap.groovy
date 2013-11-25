@@ -6,26 +6,26 @@ import lv.neueda.task.specification.Test
 import lv.neueda.task.specification.TestInfo
 
 
-class SpecificationParseMindMap implements SpecificationParse {
+class SpecByMindMap implements Spec {
 
 
     @Override
-    def parseData(specificationPath) {
-        def resource = SpecificationParseMindMap.getResource(specificationPath)
+    def parseSpecification(specificationPath) {
         File file = new File(specificationPath)
-        assert file.exists()
-        assert file.isFile()
+        assert file.exists(): "File ${file} not found"
+        assert file.isFile(): "File ${file} is not file"
         def rootNode = new XmlParser().parse(file)
 
-        getSpecificationData(rootNode)
+        getSpecificationData(rootNode.node[0])
     }
 
     def getSpecificationData(Node rootNode) {
         Data data = new Data(name: rootNode.@TEXT)
         rootNode.children().each { testNode ->
             Test test = new Test(name: testNode.@TEXT)
-            def requestNode = testNode.node[0]
-            Request request = new Request(method: requestNode.node[0].@TEXT.tokenize(':')[1], path: requestNode.node[1].@TEXT.tokenize(':')[1])
+            def requestNode = testNode.find{node -> node.@TEXT.tokenize(':')[0] == "Request"}
+            assert requestNode != null: "request node can't be null"
+            Request request = new Request(method: requestNode.node[0].@TEXT.tokenize(':')[1].trim(), path: requestNode.node[1].@TEXT.tokenize(':')[1].trim())
             test.request = request
             def testsWithoutRequest = testNode.children().minus(requestNode)
             testsWithoutRequest.each { testInfo ->

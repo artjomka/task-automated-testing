@@ -11,5 +11,6 @@ repositories {
     dependencies {
         compile "org.spockframework:spock-core:0.7-groovy-2.0"
         compile "org.codehaus.groovy:groovy-all:2.2.0-rc-3"
+        compile "com.jayway.restassured:rest-assured:1.8.1"
     }
 }
