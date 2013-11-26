@@ -4,10 +4,8 @@ import groovy.transform.ToString
 
 
 @ToString(includePackage = false)
-class Data {
+class TestSuite {
     String name
-    List<Test> tests = []
-
-
-
+    Request request
+    List<TestCase> testCases = []
 }

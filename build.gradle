@@ -1,6 +1,11 @@
 apply plugin: 'groovy'
 apply plugin: 'idea'
 
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.9'
+}
+
 configurations.all{
     resolutionStrategy{
         failOnVersionConflict()

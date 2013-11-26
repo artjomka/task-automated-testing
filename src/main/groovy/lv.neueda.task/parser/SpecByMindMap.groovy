@@ -1,9 +1,9 @@
 package lv.neueda.task.parser
 
-import lv.neueda.task.specification.Data
 import lv.neueda.task.specification.Request
-import lv.neueda.task.specification.Test
+import lv.neueda.task.specification.SpecData
 import lv.neueda.task.specification.TestCase
+import lv.neueda.task.specification.TestSuite
 
 class SpecByMindMap implements Spec {
 
@@ -20,9 +20,9 @@ class SpecByMindMap implements Spec {
     }
 
     def getSpecificationData(Node rootNode) {
-        Data data = new Data(name: rootNode.@TEXT)
+        SpecData data = new SpecData(name: rootNode.@TEXT)
         rootNode.children().each { testNode ->
-            Test test = new Test(name: testNode.@TEXT)
+            TestSuite test = new TestSuite(name: testNode.@TEXT)
             def requestNode = testNode.find { node -> node.@TEXT.tokenize(':')[0] == "Request" }
             assert requestNode != null: "request node can't be null"
             Request request = new Request(method: requestNode.node[0].@TEXT.tokenize(':')[1].trim(), path: requestNode.node[1].@TEXT.tokenize(':')[1].trim())
@@ -36,7 +36,7 @@ class SpecByMindMap implements Spec {
                         variables: variables,
                         result: testCase.node[2].@TEXT.tokenize(":")[1].trim()))
             }
-            data.tests.add(test)
+            data.testSuites.add(test)
 
         }
 

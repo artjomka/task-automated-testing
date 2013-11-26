@@ -5,10 +5,9 @@ import spock.lang.Specification
 class SpecByMindMapTest extends Specification {
 
 
-
     def "Read specification from mind map file"() {
         setup:
-        def config = new ConfigSlurper().parse(new File('src/test/resources/test.properties').toURL())
+        def config = new ConfigSlurper().parse(new File('src/test/resources/test.properties').toURI().toURL())
         Spec specificationParse = new SpecByMindMap()
         def result = specificationParse.parseSpecification(config.get("mindMapPath"))
 
@@ -16,15 +15,15 @@ class SpecByMindMapTest extends Specification {
         result
         then:
         result != null
-        result.name == "Calculator tests"
-        result.tests != null
-        result.tests.size() == 4
+        result.name == "Calculator testSuites"
+        result.testSuites != null
+        result.testSuites.size() == 4
 
         when:
-        def addTest = result.tests.find{test -> test.name == "Add"}
-        def subtractTest = result.tests.find{test -> test.name == "Subtract"}
-        def multiplyTest = result.tests.find{test -> test.name == "Multiply"}
-        def divideTest = result.tests.find{test -> test.name == "Divide"}
+        def addTest = result.testSuites.find { test -> test.name == "Add" }
+        def subtractTest = result.testSuites.find { test -> test.name == "Subtract" }
+        def multiplyTest = result.testSuites.find { test -> test.name == "Multiply" }
+        def divideTest = result.testSuites.find { test -> test.name == "Divide" }
 
         then:
         addTest != null
@@ -53,8 +52,8 @@ class SpecByMindMapTest extends Specification {
         divideTest.request.path == "/rest/divide"
 
         when:
-        def addTestCaseOne =  addTest.testCases.find{testCase -> testCase.name == "simple addition"}
-        def addTestCaseTwo =  addTest.testCases.find{testCase -> testCase.name == "adding a negative number"}
+        def addTestCaseOne = addTest.testCases.find { testCase -> testCase.name == "simple addition" }
+        def addTestCaseTwo = addTest.testCases.find { testCase -> testCase.name == "adding a negative number" }
 
         then:
         addTestCaseOne.variables.size() == 2
@@ -86,6 +85,7 @@ class SpecByMindMapTest extends Specification {
         -2.3        | -6.76       | 15.548 | { x, y -> return x * y }
         5           | 2           | 2.5    | { x, y -> return x / y }
         3           | 4           | 7      | { x, y -> return x + y }
+        22.36       | -5          | -4.47  | { x, y -> return x / y }
     }
 
 
