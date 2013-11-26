@@ -34,7 +34,7 @@ repositories {
     mavenCentral()
 
     maven {
-        url "http://repo.spring.parser/milestone"
+        url "http://repo.spring.service/milestone"
     }
 }
 

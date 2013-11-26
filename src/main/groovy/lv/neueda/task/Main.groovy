@@ -3,8 +3,8 @@ package lv.neueda.task
 import groovy.json.JsonBuilder
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
-import lv.neueda.task.parser.Spec
-import lv.neueda.task.parser.SpecByMindMap
+import lv.neueda.task.service.Spec
+import lv.neueda.task.service.SpecByMindMap
 import lv.neueda.task.util.MainHelper
 
 class Main {

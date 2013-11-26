@@ -1,4 +1,4 @@
-package lv.neueda.task.parser
+package lv.neueda.task.service
 
 import spock.lang.Specification
 
