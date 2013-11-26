@@ -1,4 +1,4 @@
-package lv.neueda.task.io
+package lv.neueda.task.parser
 
 
 public interface Spec {

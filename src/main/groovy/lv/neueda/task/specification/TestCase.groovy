@@ -4,9 +4,8 @@ import groovy.transform.ToString
 
 
 @ToString(includePackage = false)
-class TestInfo {
+class TestCase {
     String name
-    def variableOne
-    def variableTwo
+    def variables = [:]
     def result
 }

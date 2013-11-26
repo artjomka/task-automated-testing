@@ -7,5 +7,5 @@ import groovy.transform.ToString
 class Test {
     String name
     Request request
-    List<TestInfo> testInfos = []
+    List<TestCase> testCases = []
 }

@@ -1,26 +1,17 @@
-package lv.neueda.task.io
+package lv.neueda.task.parser
 
 import spock.lang.Specification
 
+class SpecByMindMapTest extends Specification {
 
 
-class SpecificationByMindMapTest extends Specification {
-
-
-    def "File not found"(){
-        Spec specificationParse = new SpecByMindMap()
-
-        def result = specificationParse.parseSpecification('abr')
-        when:
-        result
-        then:
-        thrown AssertionError
-    }
 
     def "Read specification from mind map file"() {
+        setup:
+        def config = new ConfigSlurper().parse(new File('src/test/resources/test.properties').toURL())
         Spec specificationParse = new SpecByMindMap()
+        def result = specificationParse.parseSpecification(config.get("mindMapPath"))
 
-        def result = specificationParse.parseSpecification('C:\\Users\\artjom\\IdeaProjects\\task-automated-testing\\src\\main\\resources\\mindmap.xml')
         when:
         result
         then:
@@ -29,39 +20,56 @@ class SpecificationByMindMapTest extends Specification {
         result.tests != null
         result.tests.size() == 4
 
+        when:
         def addTest = result.tests.find{test -> test.name == "Add"}
         def subtractTest = result.tests.find{test -> test.name == "Subtract"}
         def multiplyTest = result.tests.find{test -> test.name == "Multiply"}
         def divideTest = result.tests.find{test -> test.name == "Divide"}
 
-        expect:
+        then:
         addTest != null
-        addTest.testInfos != null
-        addTest.testInfos.size() == 2
+        addTest.testCases != null
+        addTest.testCases.size() == 2
         addTest.request != null
         addTest.request.method == "POST"
         addTest.request.path == "/rest/add"
 
         subtractTest != null
-        subtractTest.testInfos != null
-        subtractTest.testInfos.size() == 2
+        subtractTest.testCases != null
+        subtractTest.testCases.size() == 2
         subtractTest.request.method == "POST"
         subtractTest.request.path == "/rest/subtract"
 
         multiplyTest != null
-        multiplyTest.testInfos != null
-        multiplyTest.testInfos.size() == 2
+        multiplyTest.testCases != null
+        multiplyTest.testCases.size() == 2
         multiplyTest.request.method == "POST"
         multiplyTest.request.path == "/rest/multiply"
 
         divideTest != null
-        divideTest.testInfos != null
-        divideTest.testInfos.size() == 3
+        divideTest.testCases != null
+        divideTest.testCases.size() == 3
         divideTest.request.method == "POST"
         divideTest.request.path == "/rest/divide"
 
+        when:
+        def addTestCaseOne =  addTest.testCases.find{testCase -> testCase.name == "simple addition"}
+        def addTestCaseTwo =  addTest.testCases.find{testCase -> testCase.name == "adding a negative number"}
 
+        then:
+        addTestCaseOne.variables.size() == 2
+        "variableOne" in addTestCaseOne.variables.keySet()
+        "variableTwo" in addTestCaseOne.variables.keySet()
+        "6" in addTestCaseOne.variables.values()
+        "8" in addTestCaseOne.variables.values()
+        addTestCaseOne.result == "14"
 
+        addTestCaseTwo.variables.size() == 2
+        "variableOne" in addTestCaseTwo.variables.keySet()
+        "variableTwo" in addTestCaseTwo.variables.keySet()
+        "-5.34" in addTestCaseTwo.variables.values()
+        "3.95" in addTestCaseTwo.variables.values()
+        addTestCaseTwo.result == "-1.39"
 
     }
 
