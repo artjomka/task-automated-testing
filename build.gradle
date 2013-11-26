@@ -1,13 +1,23 @@
+
 apply plugin: 'groovy'
 apply plugin: 'idea'
+apply plugin: 'application'
 
+
+mainClassName="lv.neueda.task.Main"
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.9'
 }
 
-configurations.all{
-    resolutionStrategy{
+run {
+    if (project.hasProperty("arg")) {
+        args arg
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
         failOnVersionConflict()
         force "org.codehaus.groovy:groovy-all:2.2.0-rc-3"
         force "org.hamcrest:hamcrest-core:1.3"
@@ -33,8 +43,7 @@ dependencies {
     compile 'org.spockframework:spock-core:0.7-groovy-2.0'
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.6'
 
-    runtime  'org.codehaus.groovy:groovy-all:2.2.0-rc-3'
-
+    runtime 'org.codehaus.groovy:groovy-all:2.2.0-rc-3'
 
 
 }

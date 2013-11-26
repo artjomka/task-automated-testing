@@ -22,21 +22,23 @@ class SpecByMindMap implements Spec {
     def getSpecificationData(Node rootNode) {
         SpecData data = new SpecData(name: rootNode.@TEXT)
         rootNode.children().each { testNode ->
-            TestSuite test = new TestSuite(name: testNode.@TEXT)
+            TestSuite testSuite = new TestSuite(name: testNode.@TEXT)
             def requestNode = testNode.find { node -> node.@TEXT.tokenize(':')[0] == "Request" }
             assert requestNode != null: "request node can't be null"
             Request request = new Request(method: requestNode.node[0].@TEXT.tokenize(':')[1].trim(), path: requestNode.node[1].@TEXT.tokenize(':')[1].trim())
-            test.request = request
+            testSuite.request = request
             def testCases = testNode.children().minus(requestNode)
+            assert testCases.size() > 0 : "No test cases found for test suite ${testSuite.name}"
             testCases.each { testCase ->
+                assert testCase != null : "Test case cant be null"
                 def variables = [:]
-                variables.put(testCase?.node[0].@TEXT.tokenize(":")[0].trim(), testCase.node[0].@TEXT.tokenize(":")[1].trim())
-                variables.put(testCase?.node[1].@TEXT.tokenize(":")[0].trim(), testCase.node[1].@TEXT.tokenize(":")[1].trim())
-                test.testCases.add(new TestCase(name: testCase.@TEXT.tokenize(':')[1].trim(),
+                variables.put(testCase.node[0].@TEXT.tokenize(":")[0].trim(), testCase.node[0].@TEXT.tokenize(":")[1].trim())
+                variables.put(testCase.node[1].@TEXT.tokenize(":")[0].trim(), testCase.node[1].@TEXT.tokenize(":")[1].trim())
+                testSuite.testCases.add(new TestCase(name: testCase.@TEXT.tokenize(':')[1].trim(),
                         variables: variables,
                         result: testCase.node[2].@TEXT.tokenize(":")[1].trim()))
             }
-            data.testSuites.add(test)
+            data.testSuites.add(testSuite)
 
         }
 
