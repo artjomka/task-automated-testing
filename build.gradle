@@ -17,11 +17,12 @@ run {
 }
 
 configurations.all {
+    exclude group: 'org.codehaus.groovy', module: 'groovy'
     resolutionStrategy {
         failOnVersionConflict()
-        force "org.codehaus.groovy:groovy-all:2.2.0-rc-3"
-        force "org.hamcrest:hamcrest-core:1.3"
-        force "commons-lang:commons-lang:2.4"
+        force 'org.codehaus.groovy:groovy-all:2.2.0-rc-3'
+        force 'org.hamcrest:hamcrest-core:1.3'
+        force 'commons-lang:commons-lang:2.4'
 
 
     }

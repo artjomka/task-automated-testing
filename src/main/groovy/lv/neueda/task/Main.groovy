@@ -18,14 +18,14 @@ class Main {
         def methodHelper = new MainHelper()
 
         data.testSuites.each { testSuite ->
-            println "Processing ${testSuite.name}"
+            println "Processing test suite ${testSuite.name}"
 
             def method
             method = methodHelper.getHttpRequestMethod(testSuite.request)
             def path = testSuite.request.path
 
             testSuite.testCases.each { testCase ->
-                println "Running testSuite case ${testCase.name}"
+                println "Running test case ${testCase.name}"
                 def jsonBuilder = new JsonBuilder()
                 jsonBuilder(testCase.variables)
                 restClient.request(method, ContentType.JSON) { request ->
@@ -36,14 +36,15 @@ class Main {
                     response.success = { resp, xml ->
                         assert xml != null
                         if (testCase.result != xml.get("result")) {
-                            errors.add("Error while processing testSuite case ${testCase.name} in testSuite suit ${testSuite.name} \n expected ${testCase.result} but was  ${xml.get("result")}")
+                            errors.add("Error while processing test case ${testCase.name} in test suit ${testSuite.name} \n expected ${testCase.result}, but was ${xml.get("result")}")
                         }
                         println ""
                     }
                 }
             }
         }
-        println "Errors found ${errors.size()}"
+
         if (errors.size() == 0) println "Congratulation no errors found in REST calculator"
+        else errors.each { println it }
     }
 }
