@@ -1,9 +1,9 @@
-package lv.neueda.task.service
-import lv.neueda.task.Constants
-import lv.neueda.task.specification.Request
-import lv.neueda.task.specification.SpecData
-import lv.neueda.task.specification.TestCase
-import lv.neueda.task.specification.TestSuite
+package lv.neueda.homework.service
+import lv.neueda.homework.Constants
+import lv.neueda.homework.specification.Request
+import lv.neueda.homework.specification.SpecData
+import lv.neueda.homework.specification.TestCase
+import lv.neueda.homework.specification.TestSuite
 
 class SpecByMindMap implements Spec {
 
@@ -20,6 +20,7 @@ class SpecByMindMap implements Spec {
     }
 
     def getSpecificationData(Node rootNode) {
+        assert rootNode != null: "Root node can't be null"
         SpecData data = new SpecData(name: rootNode.@TEXT)
         rootNode.children().each { testNode ->
             TestSuite testSuite = new TestSuite(name: testNode.@TEXT)

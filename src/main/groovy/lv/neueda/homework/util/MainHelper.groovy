@@ -1,8 +1,7 @@
-package lv.neueda.task.util
+package lv.neueda.homework.util
 
 import groovyx.net.http.Method
-import lv.neueda.task.specification.Request
-import lv.neueda.task.specification.TestSuite
+import lv.neueda.homework.specification.Request
 
 class MainHelper {
 

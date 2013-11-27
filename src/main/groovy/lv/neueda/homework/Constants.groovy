@@ -1,4 +1,4 @@
-package lv.neueda.task
+package lv.neueda.homework
 
 
 class Constants {

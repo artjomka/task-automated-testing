@@ -1,4 +1,4 @@
-package lv.neueda.task.specification
+package lv.neueda.homework.specification
 
 import groovy.transform.ToString
 

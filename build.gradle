@@ -4,7 +4,7 @@ apply plugin: 'idea'
 apply plugin: 'application'
 
 
-mainClassName="lv.neueda.task.Main"
+mainClassName="lv.neueda.homework.Main"
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.9'

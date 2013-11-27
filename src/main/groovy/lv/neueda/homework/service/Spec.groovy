@@ -1,4 +1,4 @@
-package lv.neueda.task.service
+package lv.neueda.homework.service
 
 
 public interface Spec {

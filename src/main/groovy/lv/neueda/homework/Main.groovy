@@ -1,13 +1,13 @@
-package lv.neueda.task
+package lv.neueda.homework
 
 import groovy.json.JsonBuilder
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
-import lv.neueda.task.service.Spec
-import lv.neueda.task.service.SpecByMindMap
-import lv.neueda.task.util.MainHelper
+import lv.neueda.homework.service.Spec
+import lv.neueda.homework.service.SpecByMindMap
+import lv.neueda.homework.util.MainHelper
 
-import static lv.neueda.task.Constants.*
+import static lv.neueda.homework.Constants.*
 
 class Main {
     static main(args) {
