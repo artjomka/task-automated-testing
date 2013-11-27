@@ -7,13 +7,15 @@ import lv.neueda.task.service.Spec
 import lv.neueda.task.service.SpecByMindMap
 import lv.neueda.task.util.MainHelper
 
+import static lv.neueda.task.Constants.*
+
 class Main {
     static main(args) {
         assert args.size() > 0: "Please provide full path to mind map file "
         Spec spec = new SpecByMindMap()
         def data = spec.parseSpecification(args[0])
         def errors = []
-        def restClient = new HTTPBuilder("http://neueda.jelastic.dogado.eu")
+        def restClient = new HTTPBuilder(SERVER_LOCATION)
         println "Processing ${data.name}"
         def methodHelper = new MainHelper()
 
@@ -29,14 +31,15 @@ class Main {
                 def jsonBuilder = new JsonBuilder()
                 jsonBuilder(testCase.variables)
                 restClient.request(method, ContentType.JSON) { request ->
-                    uri.path = '/calculator' + path
+                    uri.path = REST_SERVICE + path
                     body = jsonBuilder.toString()
 
 
                     response.success = { resp, xml ->
                         assert xml != null
-                        if (testCase.result != xml.get("result")) {
-                            errors.add("Error while processing test case ${testCase.name} in test suit ${testSuite.name} \n expected ${testCase.result}, but was ${xml.get("result")}")
+                        if (testCase.result != xml.get(RESULT_KEY)) {
+                            errors.add("Error while processing test case ${testCase.name} in test suit ${testSuite.name} " +
+                                    " \n expected ${testCase.result}, but was ${xml.get(RESULT_KEY)}")
                         }
                         println ""
                     }
