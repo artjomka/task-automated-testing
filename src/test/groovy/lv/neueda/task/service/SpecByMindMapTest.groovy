@@ -1,21 +1,40 @@
 package lv.neueda.task.service
 
+import spock.lang.Shared
 import spock.lang.Specification
 
 class SpecByMindMapTest extends Specification {
 
+    @Shared
+    private Spec specificationParse = new SpecByMindMap()
+
+    def "Mind map file not found"() {
+        when:
+        specificationParse.parseSpecification("nofile")
+        then:
+        AssertionError exception = thrown()
+        exception.message.contains "File nofile not found"
+    }
+
+    def "File is directory"() {
+        when:
+        specificationParse.parseSpecification("src/test/")
+        then:
+        AssertionError exception = thrown()
+        exception.message.contains "File src\\test is not file"
+    }
 
     def "Read specification from mind map file"() {
         setup:
         def config = new ConfigSlurper().parse(new File('src/test/resources/test.properties').toURI().toURL())
-        Spec specificationParse = new SpecByMindMap()
+
         def result = specificationParse.parseSpecification(config.get("mindMapPath"))
 
         when:
         result
         then:
         result != null
-        result.name == "Calculator testSuites"
+        result.name == "Calculator tests"
         result.testSuites != null
         result.testSuites.size() == 4
 
@@ -71,22 +90,5 @@ class SpecByMindMapTest extends Specification {
         addTestCaseTwo.result == "-1.39"
 
     }
-
-
-
-    def "Apply closure action variables"(def variableOne, def variableTwo, def result, def action) {
-
-        expect:
-        action(variableOne, variableTwo) == result
-
-        where:
-        variableOne | variableTwo | result | action
-        5           | 9           | 45     | { x, y -> return x * y }
-        -2.3        | -6.76       | 15.548 | { x, y -> return x * y }
-        5           | 2           | 2.5    | { x, y -> return x / y }
-        3           | 4           | 7      | { x, y -> return x + y }
-        22.36       | -5          | -4.47  | { x, y -> return x / y }
-    }
-
 
 }
