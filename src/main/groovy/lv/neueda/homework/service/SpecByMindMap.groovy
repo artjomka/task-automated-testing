@@ -10,7 +10,10 @@ class SpecByMindMap implements Spec {
 
     @Override
     def parseSpecification(specificationPath) {
-        File file = new File(specificationPath)
+        def resource = getClass().getClassLoader().getResource(specificationPath)
+        assert resource != null: "No resource with name ${specificationPath} found"
+
+        File file = new File(resource.toURI())
 
         assert file.exists(): "File ${file} not found"
         assert file.isFile(): "File ${file} is not file"

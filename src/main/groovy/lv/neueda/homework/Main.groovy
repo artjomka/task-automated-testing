@@ -20,14 +20,14 @@ class Main {
         def methodHelper = new MainHelper()
 
         data.testSuites.each { testSuite ->
-            println "Processing test suite ${testSuite.name}"
-
+            println "\tProcessing test suite ${testSuite.name}"
+            println ""
             def method
             method = methodHelper.getHttpRequestMethod(testSuite.request)
             def path = testSuite.request.path
 
             testSuite.testCases.each { testCase ->
-                println "Running test case ${testCase.name}"
+                println "\t\tRunning test case ${testCase.name}"
                 def jsonBuilder = new JsonBuilder()
                 jsonBuilder(testCase.variables)
                 restClient.request(method, ContentType.JSON) { request ->

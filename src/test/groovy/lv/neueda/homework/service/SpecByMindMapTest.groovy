@@ -8,27 +8,19 @@ class SpecByMindMapTest extends Specification {
     @Shared
     private Spec specificationParse = new SpecByMindMap()
 
-    def "Mind map file not found"() {
+    def "No resource found "() {
         when:
         specificationParse.parseSpecification("nofile")
         then:
         AssertionError exception = thrown()
-        exception.message.contains "File nofile not found"
-    }
-
-    def "File is directory"() {
-        when:
-        specificationParse.parseSpecification("src/test/")
-        then:
-        AssertionError exception = thrown()
-        exception.message.contains "File src\\test is not file"
+        exception.message.contains "No resource with name nofile found"
     }
 
     def "Read specification from mind map file"() {
         setup:
         def config = new ConfigSlurper().parse(new File('src/test/resources/test.properties').toURI().toURL())
 
-        def result = specificationParse.parseSpecification(config.get("mindMapPath"))
+        def result = specificationParse.parseSpecification(config.get("mindMapFile"))
 
         when:
         result
